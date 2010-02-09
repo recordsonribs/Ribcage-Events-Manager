@@ -430,7 +430,25 @@ function dbem_events_page_content() {
 			return $page_body;
 		}
 		return $events_body;
-	} else {
+	/* ROR Begin Edit */
+	} elseif (isset ( $_REQUEST ['category'] ) && $_REQUEST ['category'] != '') {
+		$_GET ['scope'] ? $scope = $_GET ['scope'] : $scope = "future";
+		$stored_format = get_option ( 'dbem_event_list_item_format' );
+
+		// If got a string in the category, this must be a slug - convert it.
+		if (is_string($_REQUEST['category']){
+			$category = dbem_category_slug_to_id($_REQUEST['category']);
+		}
+		elseif (is_numeric($_REQUEST['category'])) {
+			$category = $_REQUEST['category'];
+		}
+		
+		$events_body = $events_body = "<ul class='dbem_events_list'>" . dbem_get_events_list ( 10, $scope, "ASC", $stored_format, $false, $category ) . "</ul>";
+		
+		return $page_body;
+	} 
+	/* ROR End Edit */
+	else {
 		// Multiple events page
 		$_GET ['scope'] ? $scope = $_GET ['scope'] : $scope = "future";
 		$stored_format = get_option ( 'dbem_event_list_item_format' );
