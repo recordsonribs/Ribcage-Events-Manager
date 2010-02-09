@@ -2117,7 +2117,7 @@ function dbem_rss() {
 http://blogs.law.harvard.edu/tech/rss
 </docs>
 <generator>
-Weblog Editor 2.0
+Wordpress Events Manager Plugin
 </generator>
 <?php
 		$title_format = get_option ( 'dbem_rss_title_format' );
