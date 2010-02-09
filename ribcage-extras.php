@@ -31,7 +31,7 @@ function dbem_category_slug_to_id() {
 /**
  * Automatically populates categories with artist names.
  *
- * @author Alex Andrews
+ * @author Alex Andrews (alex@recordsonribs.com)
  */
 function dbem_populate_categories_with_bands() {
 	
