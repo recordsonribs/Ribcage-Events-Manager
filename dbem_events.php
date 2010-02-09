@@ -431,6 +431,7 @@ function dbem_events_page_content() {
 		}
 		return $events_body;
 	/* ROR Begin Edit */
+	/* Display a particular category. */
 	} elseif (isset ( $_REQUEST ['category'] ) && $_REQUEST ['category'] != '') {
 		$_GET ['scope'] ? $scope = $_GET ['scope'] : $scope = "future";
 		$stored_format = get_option ( 'dbem_event_list_item_format' );
@@ -2118,7 +2119,7 @@ function dbem_rss() {
 			$joiner = "&amp;";
 		else
 			$joiner = "?";
-		
+	
 		?>
 <rss version="2.0">
 <channel>
@@ -2140,7 +2141,19 @@ Wordpress Events Manager Plugin
 <?php
 		$title_format = get_option ( 'dbem_rss_title_format' );
 		$description_format = str_replace ( ">", "&gt;", str_replace ( "<", "&lt;", get_option ( 'dbem_rss_description_format' ) ) );
-		$events = dbem_get_events ( 5 );
+		
+		/* ROR Begin Edit */
+		/* Added support for creating an RSS feed from a specific category. */
+		
+		if ( $_REQUEST['category']) {
+			
+		}
+		else {
+			$events = dbem_get_events ( 5 );
+		}
+		
+		/* ROR End Edit */
+
 		foreach ( $events as $event ) {
 			$title = dbem_replace_placeholders ( $title_format, $event, "rss" );
 			$description = dbem_replace_placeholders ( $description_format, $event, "rss" );
