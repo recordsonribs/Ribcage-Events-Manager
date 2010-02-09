@@ -65,9 +65,9 @@ define('DEBUG', false);
 /* Marcus Begin Edit */
 include("marcus-extras.php");
 /* Marcus End Edit */
-/* Include ROR produced Ribcage add ons */
+/* ROR Begin Edit */
 include("ribcage-extras.php")
-/* End Edit */
+/* ROR End Edit */
 include("dbem_events.php");
 include("dbem_calendar.php");      
 include("dbem_widgets.php");

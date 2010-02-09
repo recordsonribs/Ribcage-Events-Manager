@@ -2,6 +2,11 @@
 /**
  * Additional functions to make Events Manager play nicely with Ribcage.
  *
+ * Adds
+ * - Categories in RSS feeds
+ * - Slugs for categories
+ * - Support for wp_rewrite
+ *
  * @author Alex Andrews (alex@recordsonribs.com)
  **/
 
