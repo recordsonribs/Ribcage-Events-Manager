@@ -5,7 +5,7 @@
  * Adds
  * - Categories in RSS feeds
  * - Slugs for categories
- * - Support for wp_rewrite
+ * - Support for at /?dbem_ical=main
  *
  * @author Alex Andrews (alex@recordsonribs.com)
  **/
