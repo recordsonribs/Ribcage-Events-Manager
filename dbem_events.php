@@ -446,8 +446,6 @@ function dbem_events_page_content() {
 		
 		$category_name = dbem_get_category("$category");
 		
-		echo "Category is $category, the name of which is ".$category_name['category_name'];
-		
 		$events_body = "<ul class='dbem_events_list'>" . dbem_get_events_list ( 10, $scope, "ASC", $stored_format, $false, (int) $category ) . "</ul>";
 		
 		return $events_body;
@@ -635,12 +633,7 @@ function dbem_get_events_list($limit = "3", $scope = "future", $order = "ASC", $
 		$order = "ASC";
 	if ($format == '')
 		$format = get_option ( 'dbem_event_list_item_format' );
-	echo '<pre>';
-	echo "Passed on to dbem_get_events ( $limit, $scope, $order, '', '', $category )";
 	$events = dbem_get_events ( $limit, $scope, $order, '', '', $category );
-	
-	print_r($events);
-	echo '</pre>';
 	$output = "";
 	if (! empty ( $events )) {
 		foreach ( $events as $event ) {
