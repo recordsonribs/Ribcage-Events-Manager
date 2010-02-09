@@ -437,16 +437,20 @@ function dbem_events_page_content() {
 		$stored_format = get_option ( 'dbem_event_list_item_format' );
 
 		// If got a string in the category, this must be a slug - convert it.
-		if (is_string($_REQUEST['category']){
-			$category = dbem_category_slug_to_id($_REQUEST['category']);
+		if (is_string($_REQUEST['category'])){
+			$category = (int) $_REQUEST['category'];
 		}
 		elseif (is_numeric($_REQUEST['category'])) {
 			$category = $_REQUEST['category'];
 		}
 		
-		$events_body = $events_body = "<ul class='dbem_events_list'>" . dbem_get_events_list ( 10, $scope, "ASC", $stored_format, $false, $category ) . "</ul>";
+		$category_name = dbem_get_category("$category");
 		
-		return $page_body;
+		echo "Category is $category, the name of which is ".$category_name['category_name'];
+		
+		$events_body = "<ul class='dbem_events_list'>" . dbem_get_events_list ( 10, $scope, "ASC", $stored_format, $false, (int) $category ) . "</ul>";
+		
+		return $events_body;
 	} 
 	/* ROR End Edit */
 	else {
@@ -631,7 +635,12 @@ function dbem_get_events_list($limit = "3", $scope = "future", $order = "ASC", $
 		$order = "ASC";
 	if ($format == '')
 		$format = get_option ( 'dbem_event_list_item_format' );
+	echo '<pre>';
+	echo "Passed on to dbem_get_events ( $limit, $scope, $order, '', '', $category )";
 	$events = dbem_get_events ( $limit, $scope, $order, '', '', $category );
+	
+	print_r($events);
+	echo '</pre>';
 	$output = "";
 	if (! empty ( $events )) {
 		foreach ( $events as $event ) {
@@ -760,6 +769,7 @@ function dbem_get_events($limit = "", $scope = "future", $order = "ASC", $offset
 		
 	/* Marcus Begin Edit */
 	if ($category != '' && is_numeric($category)){
+		echo "We have a category!!!! $category";
 		$conditions [] = " event_category_id = $category";
 	}
 	/* Marcus End Edit */
@@ -787,6 +797,7 @@ function dbem_get_events($limit = "", $scope = "future", $order = "ASC", $offset
 					recurrence_id, 
 					location_id, 
 					event_contactperson_id
+					event_category_id
 					FROM $events_table   
 					$where
 					ORDER BY event_start_date $order
@@ -2145,7 +2156,7 @@ Wordpress Events Manager Plugin
 		/* ROR Begin Edit */
 		/* Added support for creating an RSS feed from a specific category. */
 		
-		if ( $_REQUEST['category']) {
+		if ( isset ( $_REQUEST['category'] ) && $_REQUEST['category'] != '' ) {
 			
 		}
 		else {
