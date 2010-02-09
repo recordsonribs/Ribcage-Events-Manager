@@ -726,7 +726,7 @@ function dbem_is_multiple_events_page() {
 
 // main function querying the database event table
 /* Marcus Begin Edit */
-	//Added extra method option for cateogry
+// Added extra method option for cateogry
 function dbem_get_events($limit = "", $scope = "future", $order = "ASC", $offset = "", $location_id = "", $category = '') {
 /* Marcus End Edit */
 	global $wpdb;
@@ -769,14 +769,13 @@ function dbem_get_events($limit = "", $scope = "future", $order = "ASC", $offset
 		
 	/* Marcus Begin Edit */
 	if ($category != '' && is_numeric($category)){
-		echo "We have a category!!!! $category";
-		$conditions [] = " event_category_id = $category";
+		array_unshift($conditions, " event_category_id = 2");
 	}
 	/* Marcus End Edit */
 	
 	$where = implode ( " AND ", $conditions );
 	if ($where != "")
-		$where = " WHERE " . $where;
+	$where = " WHERE " . $where;
 	
 	$sql = "SELECT event_id, 
 			    event_name, 
@@ -796,14 +795,13 @@ function dbem_get_events($limit = "", $scope = "future", $order = "ASC", $offset
 					event_rsvp,
 					recurrence_id, 
 					location_id, 
-					event_contactperson_id
+					event_contactperson_id,
 					event_category_id
 					FROM $events_table   
 					$where
 					ORDER BY event_start_date $order
 					$limit 
 					$offset";
-	
 	$wpdb->show_errors = true;
 	$events = $wpdb->get_results ( $sql, ARRAY_A );
 	if (! empty ( $events )) {
