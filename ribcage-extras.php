@@ -19,18 +19,30 @@
  * Creates a slug from a category name.
  *
  * @author Alex Andrews (alex@recordsonribs.com)
+ * @param int $id The ID of the category.
+ * @return string The slug of the category.
  */
-function dbem_categories_slug() {
+function dbem_categories_slug( $id ) {
 	
 }
 
 /**
  * Converts a category slug into its numerical category ID for lookup.
  *
- * @return void
  * @author Alex Andrews (alex@recordsonribs.com)
+ * @param string $slug The slug of the category.
+ * @return int ID of category.
  **/
-function dbem_category_slug_to_id() {
+function dbem_category_slug_to_id( $slug ) {
+	$categories =  dbem_get_categories();
+	
+	foreach ($categories as $category){
+		if (ribcage_slugize($category['category_name']) == $slug) {
+			return $category['category_id'];
+		}
+	}
+	
+	return null;
 }
 
 /**

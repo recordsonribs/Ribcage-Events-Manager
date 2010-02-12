@@ -430,6 +430,7 @@ function dbem_events_page_content() {
 			return $page_body;
 		}
 		return $events_body;
+		
 	/* ROR Begin Edit */
 	/* Display a particular category. */
 	} elseif (isset ( $_REQUEST ['category'] ) && $_REQUEST ['category'] != '') {
@@ -437,20 +438,19 @@ function dbem_events_page_content() {
 		$stored_format = get_option ( 'dbem_event_list_item_format' );
 
 		// If got a string in the category, this must be a slug - convert it.
-		if (is_string($_REQUEST['category'])){
+		if (ctype_digit($_REQUEST['category'])){
 			$category = (int) $_REQUEST['category'];
 		}
-		elseif (is_numeric($_REQUEST['category'])) {
-			$category = $_REQUEST['category'];
+		elseif (ctype_alpha($_REQUEST['category'])) {
+			$category = dbem_category_slug_to_id($_REQUEST['category']);
 		}
-		
-		$category_name = dbem_get_category("$category");
 		
 		$events_body = "<ul class='dbem_events_list'>" . dbem_get_events_list ( 10, $scope, "ASC", $stored_format, $false, (int) $category ) . "</ul>";
 		
 		return $events_body;
 	} 
 	/* ROR End Edit */
+	
 	else {
 		// Multiple events page
 		$_GET ['scope'] ? $scope = $_GET ['scope'] : $scope = "future";
@@ -523,7 +523,10 @@ function dbem_events_page_title($data) {
 			return $page_title;
 		} else {
 			// Multiple events page
+			/* ROR Begin Edit */
+			/* Cut this out because it makes things ugly */
 			$page_title = get_option ( 'dbem_events_page_title' );
+			/* ROR End Edit */
 			return $page_title;
 		
 		}
@@ -762,7 +765,7 @@ function dbem_get_events($limit = "", $scope = "future", $order = "ASC", $offset
 		
 	/* Marcus Begin Edit */
 	if ($category != '' && is_numeric($category)){
-		array_unshift($conditions, " event_category_id = 2");
+		array_unshift($conditions, " event_category_id = $category");
 	}
 	/* Marcus End Edit */
 	
@@ -2148,28 +2151,27 @@ Wordpress Events Manager Plugin
 		/* Added support for creating an RSS feed from a specific category. */
 		
 		if ( isset ( $_REQUEST['category'] ) && $_REQUEST['category'] != '' ) {
-			
+			$events = dbem_get_events ( 5, future, ASC, '', '',  $_REQUEST['category']  );
 		}
 		else {
-			$events = dbem_get_events ( 5 );
+			$events = dbem_get_events ( 10 );
 		}
 		
-		/* ROR End Edit */
-
-		foreach ( $events as $event ) {
-			$title = dbem_replace_placeholders ( $title_format, $event, "rss" );
-			$description = dbem_replace_placeholders ( $description_format, $event, "rss" );
-			echo "<item>";
-			echo "<title>$title</title>\n";
-			echo "<link>$events_page_link" . $joiner . "event_id=" . $event ['event_id'] . "</link>\n ";
-			echo "<description>$description </description>\n";
-			echo "</item>";
+		if ($events != '') {
+			foreach ( $events as $event ) {
+				$title = dbem_replace_placeholders ( $title_format, $event, "rss" );
+				$description = dbem_replace_placeholders ( $description_format, $event, "rss" );
+				echo "<item>";
+				echo "<title>$title</title>\n";
+				echo "<link>$events_page_link" . $joiner . "event_id=" . $event ['event_id'] . "</link>\n ";
+				echo "<description>$description </description>\n";
+				echo "</item>";
+			}
 		}
+		/* ROR End Edit */
 		?>
-
 </channel>
 </rss>
-
 <?php
 		die ();
 	}

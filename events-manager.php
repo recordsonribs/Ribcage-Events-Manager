@@ -66,7 +66,7 @@ define('DEBUG', false);
 include("marcus-extras.php");
 /* Marcus End Edit */
 /* ROR Begin Edit */
-include("ribcage-extras.php")
+include("ribcage-extras.php");
 /* ROR End Edit */
 include("dbem_events.php");
 include("dbem_calendar.php");      
@@ -661,14 +661,19 @@ function dbem_replace_placeholders($format, $event, $target="html") {
 			// echo $event_string;  
 		}
 		
-		/* Marcus Begin Edit*/
+		/* Marcus/ROR Begin Edit*/
 			//Add a placeholder for categories
 		 	if (preg_match('/#_CATEGORY$/', $result)) {
 	      		$category = (dbem_get_event_category($event['event_id']));
-				$event_string = str_replace($result, $category['category_name'], $event_string );
+	
+				if (stristr($event_page_link, "?"))
+					$joiner = "&amp;";
+				else
+					$joiner = "?";
+				
+				$event_string = str_replace($result, "<a href='".get_permalink($events_page_id).$joiner."category=".$category['category_id']."'   title='".$category['category_name']."'>".$category['category_name']."</a>", $event_string );
 			}
-		/* Marcus End Edit */
-		
+		/* Marcus/ROR End Edit */
 		     
 	}
 	/* Marcus Begin Edit */
