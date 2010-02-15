@@ -521,7 +521,17 @@ function dbem_events_page_title($data) {
 			$stored_page_title_format = get_option ( 'dbem_event_page_title_format' );
 			$page_title = dbem_replace_placeholders ( $stored_page_title_format, $event );
 			return $page_title;
-		} else {
+		}
+                elseif (isset ($_REQUEST['category']) && $_REQUEST['category'] != ''){
+                        /* ROR Begin Edit */
+                        $page_title = get_option ( 'dbem_events_page_title' );
+                        $category = dbem_get_category($_REQUEST['category']);
+                        $page_title .= " &rsaquo; ";
+                        $page_title .= "<a href='".get_permalink($events_page_id).'&amp;category='.$category['category_id']."'   title='".$category['category_name']."'>".$category['category_name']."</a>";
+                        return $page_title;
+                        /* ROR End Edit */
+                }
+                else {
 			// Multiple events page
 			/* ROR Begin Edit */
 			/* Cut this out because it makes things ugly */
