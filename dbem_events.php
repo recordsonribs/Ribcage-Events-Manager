@@ -528,6 +528,7 @@ function dbem_events_page_title($data) {
                         $category = dbem_get_category($_REQUEST['category']);
                         $page_title .= " &rsaquo; ";
                         $page_title .= "<a href='".get_permalink($events_page_id).'&amp;category='.$category['category_id']."'   title='".$category['category_name']."'>".$category['category_name']."</a>";
+                        $page_title = "HERE";
                         return $page_title;
                         /* ROR End Edit */
                 }
@@ -536,7 +537,6 @@ function dbem_events_page_title($data) {
 			/* ROR Begin Edit */
 			/* Cut this out because it makes things ugly */
 			$page_title = get_option ( 'dbem_events_page_title' );
-                        $page_title = "we get here";
 			/* ROR End Edit */
 			return $page_title;
 		
