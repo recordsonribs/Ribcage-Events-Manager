@@ -54,4 +54,7 @@ function dbem_populate_categories_with_bands() {
 	
 }
 
+function dbem_is_category_page() {
+	return (dbem_is_events_page () && (isset ( $_REQUEST ['category'] ) && $_REQUEST ['category'] != ''));
+}
 ?>
