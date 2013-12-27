@@ -1727,9 +1727,7 @@ function dbem_admin_general_script() {
 
 <style type='text/css' media='all'>
 @import
-	"<?php
-	bloginfo ( 'url' );
-	?>/wp-content/plugins/events-manager/js/jquery-ui-datepicker/ui.datepicker.css"
+	"<?php plugins_url('js/jquery-ui-datepicker/ui.datepicker.css', __FILE__); ?>"
 	;
 </style>
 <script type="text/javascript">
@@ -2193,9 +2191,9 @@ function substitute_rss($data) {
 		return $data;
 }
 function dbem_general_css() {
-	$base_url = get_bloginfo ( 'url' );
-	echo "<link rel='stylesheet' href='$base_url/wp-content/plugins/events-manager/events_manager.css' type='text/css'/>";
+	$css_url = plugins_url('events_manager.css', __FILE__);
 
+	echo "<link rel='stylesheet' href='$css_url' type='text/css'/>";
 }
 add_action ( 'wp_head', 'dbem_general_css' );
 add_action ( 'admin_head', 'dbem_general_css' );
